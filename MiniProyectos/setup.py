@@ -4,9 +4,9 @@ setup(
     name="Gestor de Tareas",
     version="2.0.0",
     description="Gestor de tareas desde la terminal",
-    author="Cristian",  # Cambia esto a tu nombre
-    author_email="cristianguevara0331@gmail.com",  # Cambia esto a tu correo
-    url="https://github.com/DearDayz/Lenguaje-Programacion.git",  # Cambia el enlace a tu repositorio de GitHub
+    author="Cristian", 
+    author_email="cristianguevara0331@gmail.com",
+    url="https://github.com/DearDayz/Lenguaje-Programacion.git",
     packages=find_packages(),
     entry_points={
         "console_scripts": [
