@@ -4,7 +4,7 @@ import os
 # Agregar la ruta del directorio principal a sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from gestor_tareas import marcar_en_progreso
+from MiniProyectos.gestor_tareas.gestor_tareas import marcar_en_progreso
 
 def test_marcar_en_progreso():
     bd_tareas = {"1": {"descripcion": "Tarea pendiente", "estado": "pendiente", "creada": "2025-01-30", "actualizada": "2025-01-30"}}

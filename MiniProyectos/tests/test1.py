@@ -4,7 +4,7 @@ import os
 # Agregar la ruta del directorio principal a sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from gestor_tareas import agregar_tarea
+from MiniProyectos.gestor_tareas.gestor_tareas import agregar_tarea
 
 def test_agregar_tarea():
     bd_tareas = {}  # Base de datos vacía

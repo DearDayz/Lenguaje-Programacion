@@ -4,7 +4,7 @@ import os
 # Agregar la ruta del directorio principal a sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from gestor_tareas import modificar_tarea
+from MiniProyectos.gestor_tareas.gestor_tareas import modificar_tarea
 
 def test_modificar_tarea():
     bd_tareas = {"1": {"descripcion": "Tarea original", "estado": "pendiente", "creada": "2025-01-30", "actualizada": "2025-01-30"}}
