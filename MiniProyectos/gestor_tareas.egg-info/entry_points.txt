@@ -1,0 +1,2 @@
+[console_scripts]
+tarea = gestor_tareas.gestor_tareas:iniciar_programa
