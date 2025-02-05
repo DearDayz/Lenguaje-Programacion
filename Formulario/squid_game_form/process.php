@@ -20,6 +20,12 @@ $new_id = count($participants) + 1;
 $nombre = $_POST['nombre'];
 $deuda = $_POST['deuda'];
 $razon = $_POST['razon'];
+$telefono = $_POST['telefono'];
+$correo = $_POST['correo'];
+$edad = $_POST['edad'];
+$genero = $_POST['genero'];
+$pais = $_POST['pais'];
+
 
 // Obtener las listas de rutas de imágenes y documentos
 $imagenes = isset($_POST['imagenes']) ? json_decode($_POST['imagenes'], true) : [];
@@ -53,6 +59,11 @@ $participant = [
     'id' => $new_id,
     'nombre' => $nombre,
     'foto_perfil' => $foto_perfil,
+    'edad' => $edad,
+    'genero' => $genero,
+    'pais' => $pais,
+    'correo' => $correo,
+    'telefono' => $telefono,
     'deuda' => $deuda,
     'razon' => $razon,
     'imagenes' => $imagenes,

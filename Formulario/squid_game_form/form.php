@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-    <h2>Formulario de Participación - Juegos del Calamar</h2>
+    <div class="logo-container">
+        <img src="assets/titulo.png" alt="Logo de la Serie" class="logo">
+    </div>
     <form action="process.php" method="POST" enctype="multipart/form-data">
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" required>
@@ -15,6 +17,30 @@
         
         <label for="foto_perfil">Foto de perfil:</label>
         <input type="file" name="foto_perfil" accept="image/*" required>
+        <br><br>
+
+        <label for="edad">Edad:</label>
+        <input type="number" name="edad" required>
+        <br><br>
+
+        <label for="genero">Género:</label>
+        <select name="genero" required>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+            <option value="O">Otro</option>
+        </select>
+        <br><br>
+
+        <label for="pais">País:</label>
+        <input type="text" name="pais" required>
+        <br><br>
+
+        <label for="correo">Correo:</label>
+        <input type="email" name="correo" required>
+        <br><br>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" name="telefono" required>
         <br><br>
         
         <!-- Aquí va el nuevo botón para agregar imágenes -->
@@ -45,7 +71,9 @@
         
         <button type="submit">Registrar Participante</button>
     </form>
-    <a href="index.php">Volver</a>
+    <a href="index.php" class="volver-btn">
+        <img src="assets/icono-volver.png" alt="Volver" class="icono-volver">
+    </a>
 
     <script src="assets/scripts.js"></script>
 </body>

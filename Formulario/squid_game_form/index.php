@@ -9,8 +9,9 @@
 </head>
 <body>
 
-    <h1>Bienvenido al Formulario de Juegos del Calamar</h1>
-    <p>Selecciona una opción:</p>
+    <div class="logo-container">
+        <img src="assets/titulo2.png" alt="Logo de la Serie" class="logo" style="width: 30%; height: 30%;margin: 0;">
+    </div>
 
     <div class="menu">
         <a href="form.php">📝 Agregar Nuevo Participante</a>

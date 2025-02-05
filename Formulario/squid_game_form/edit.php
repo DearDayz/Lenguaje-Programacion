@@ -32,6 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $participants[$index]['nombre'] = $_POST['nombre'];
     $participants[$index]['deuda'] = $_POST['deuda'];
     $participants[$index]['razon'] = $_POST['razon'];
+    $participants[$index]['telefono'] = $_POST['telefono'];
+    $participants[$index]['correo'] = $_POST['correo'];
+    $participants[$index]['edad'] = $_POST['edad'];
+    $participants[$index]['genero'] = $_POST['genero'];
+    $participants[$index]['pais'] = $_POST['pais'];
 
     // Manejar actualización de foto de perfil
     if (!empty($_FILES['foto_perfil']['name'])) {
@@ -101,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Participante</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
     <h2>Editar Participante</h2>
@@ -122,6 +128,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         <?php endforeach; ?>
         <br>
+
+        <label>Edad: </label>
+        <input type="number" name="edad" value="<?= $participant['edad'] ?>" required><br><br>
+
+        <label>Género:</label>
+        <select name="genero" required>
+            <option value="M" <?= $participant['genero'] == 'M' ? 'selected' : '' ?>>Masculino</option>
+            <option value="F" <?= $participant['genero'] == 'F' ? 'selected' : '' ?>>Femenino</option>
+            <option value="O" <?= $participant['genero'] == 'O' ? 'selected' : '' ?>>Otro</option>
+        </select><br><br>
+
+        <label>País:</label>
+        <input type="text" name="pais" value="<?= $participant['pais'] ?>" required><br><br>
+
+        <label>Correo:</label>
+        <input type="email" name="correo" value="<?= $participant['correo'] ?>" required><br><br>
+
+        <label>Teléfono:</label>
+        <input type="tel" name="telefono" value="<?= $participant['telefono'] ?>" required><br><br>
+
 
         <label>Deuda ($):</label>
         <input type="number" name="deuda" value="<?= $participant['deuda'] ?>" required><br><br>
