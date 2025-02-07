@@ -42,21 +42,21 @@ Sigue estos pasos para configurar el proyecto en tu máquina local:
 3. **Instala las dependencias de Composer**:
 
     ```bash
-composer install
+    composer install
 Copia el archivo .env.example a .env:
 
 4. **Configura tu base de datos creada en tu servidor web ejemplo(XAMPP con MySQL)**:
     ```bash
-php artisan key:generate
+    php artisan key:generate
 Configura el almacenamiento de archivos:
 Crea un enlace simbólico para acceder a los archivos subidos desde el navegador:
 
-    bash
-php artisan storage:link
+    ```bash
+    php artisan storage:link
 Inicia el servidor de desarrollo:
 
-    bash
-php artisan serve
+    ```bash
+    php artisan serve
 Esto iniciará el servidor en http://127.0.0.1:8000
 
 ## Uso
