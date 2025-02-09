@@ -1,1 +1,16 @@
-[]
+[
+    {
+        "id": 1,
+        "nombre": "prueba",
+        "foto_perfil": "uploads\/titulo.png",
+        "edad": "18",
+        "genero": "M",
+        "pais": "Venezuela",
+        "correo": "a@a.com",
+        "telefono": "04244084554",
+        "deuda": "10000",
+        "razon": "dinero",
+        "imagenes": [],
+        "documentos": []
+    }
+]
