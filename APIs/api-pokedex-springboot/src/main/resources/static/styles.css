@@ -7,6 +7,13 @@ body {
     margin: 0;
     padding: 20px;
 }
+/* Estilo para el icono de Pokébola en el título */
+.pokeball-icon {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
 
 /* Contenedor principal de la Pokédex */
 #pokedex {
