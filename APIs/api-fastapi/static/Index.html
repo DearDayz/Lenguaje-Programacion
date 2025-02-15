@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Monedas</title>
+    <link rel="stylesheet" href="/static/style.css">
     <script>
         async function convertCurrency() {
             const amount = document.getElementById("amount").value;
@@ -22,25 +23,27 @@
     </script>
 </head>
 <body>
-    <h1>Conversor de Monedas</h1>
-    <label>Monto: <input type="number" id="amount" value="1"></label>
-    <label>De: 
-        <select id="fromCurrency">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <option value="JPY">JPY</option>
-        </select>
-    </label>
-    <label>A: 
-        <select id="toCurrency">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <option value="JPY">JPY</option>
-        </select>
-    </label>
-    <button onclick="convertCurrency()">Convertir</button>
-    <p id="result"></p>
+    <div class="container">
+        <h1>Conversor de Monedas</h1>
+        <label>Monto: <input type="number" id="amount" value="1"></label>
+        <label>De: 
+            <select id="fromCurrency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="JPY">JPY</option>
+            </select>
+        </label>
+        <label>A: 
+            <select id="toCurrency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="JPY">JPY</option>
+            </select>
+        </label>
+        <button onclick="convertCurrency()">Convertir</button>
+        <p id="result"></p>
+    </div>
 </body>
 </html>
