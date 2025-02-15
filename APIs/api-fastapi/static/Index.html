@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Monedas</title>
+    <script>
+        async function convertCurrency() {
+            const amount = document.getElementById("amount").value;
+            const fromCurrency = document.getElementById("fromCurrency").value;
+            const toCurrency = document.getElementById("toCurrency").value;
+            
+            const response = await fetch(`/convert/?amount=${amount}&from_currency=${fromCurrency}&to_currency=${toCurrency}`);
+            const data = await response.json();
+            
+            if (response.ok) {
+                document.getElementById("result").innerText = `Resultado: ${data.converted_amount} ${data.to_currency}`;
+            } else {
+                document.getElementById("result").innerText = `Error: ${data.detail}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Conversor de Monedas</h1>
+    <label>Monto: <input type="number" id="amount" value="1"></label>
+    <label>De: 
+        <select id="fromCurrency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="JPY">JPY</option>
+        </select>
+    </label>
+    <label>A: 
+        <select id="toCurrency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="JPY">JPY</option>
+        </select>
+    </label>
+    <button onclick="convertCurrency()">Convertir</button>
+    <p id="result"></p>
+</body>
+</html>
