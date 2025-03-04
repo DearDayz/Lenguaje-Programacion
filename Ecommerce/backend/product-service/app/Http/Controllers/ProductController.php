@@ -16,8 +16,11 @@ class ProductController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
+            'stock' => 'required|integer',
+            'image_url' => 'nullable|url',
         ]);
 
         $product = Product::create($validatedData);
@@ -33,8 +36,11 @@ class ProductController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric',
             'category_id' => 'sometimes|required|exists:categories,id',
+            'stock' => 'sometimes|required|integer',
+            'image_url' => 'nullable|url',
         ]);
 
         $product = Product::findOrFail($id);
