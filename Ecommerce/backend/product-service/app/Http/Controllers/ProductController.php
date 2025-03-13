@@ -9,17 +9,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-
-        // Modificar las URLs de las imágenes para que sean absolutas
-        $products->transform(function ($product) {
-            if ($product->image_url) {
-                $product->image_url = asset($product->image_url);
-            }
-            return $product;
-        });
-
-        return $products;
+        return Product::all();
     }
 
     public function store(Request $request)
@@ -39,13 +29,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::find($id);
-
-        if ($product && $product->image_url) {
-            $product->image_url = asset($product->image_url);
-        }
-
-        return $product;
+        return Product::find($id);
     }
 
     public function update(Request $request, $id)
