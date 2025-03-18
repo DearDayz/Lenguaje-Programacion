@@ -1,7 +1,6 @@
-
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Tag } from 'lucide-react';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Tag } from "lucide-react";
 
 const PromotionBanner = () => {
   return (
@@ -16,7 +15,8 @@ const PromotionBanner = () => {
               Obtén 20% de Descuento en Todos los Disfraces de Halloween
             </h2>
             <p className="text-gray-300 text-lg">
-              Usa el código HALLOWEEN20 al finalizar tu compra. Oferta válida hasta el 31 de octubre.
+              Usa el código HALLOWEEN20 al finalizar tu compra. Oferta válida
+              hasta el 31 de octubre.
             </p>
             <Button
               size="lg"
@@ -28,7 +28,7 @@ const PromotionBanner = () => {
           </div>
           <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden animate-fade-in">
             <img
-              src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
+              src="http://localhost:8080/public/perros.jpg"
               alt="Promoción de Halloween"
               className="object-cover w-full h-full"
             />
