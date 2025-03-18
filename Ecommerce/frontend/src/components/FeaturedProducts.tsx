@@ -10,43 +10,19 @@ import {
 } from "@/components/ui/sheet";
 import { ArrowBigDown } from "lucide-react";
 
-const categories = [
-  "Halloween",
-  "Superhéroes",
-  "Cosplay",
-  "Infantil",
-  "Adultos",
-  "Accesorios",
-];
-
-interface Product {
-  id: number; // Añadido id
-  name: string;
-  description: string;
-  price: number;
-  category_id: number;
-  stock: number;
-  image_url: string;
-  isNew?: boolean;
-  isOffer?: boolean;
-}
-
-interface FeaturedProductsProps {
-  showOffers?: boolean;
-  selectedCategory?: string;
-}
-
-const FeaturedProducts = ({
-  showOffers = false,
-  selectedCategory,
-}: FeaturedProductsProps) => {
+const FeaturedProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [currentTitle, setCurrentTitle] = useState("Disfraces Destacados");
   const [currentDescription, setCurrentDescription] = useState(
     "Descubre nuestros disfraces más populares y nuevas llegadas"
   );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -58,6 +34,7 @@ const FeaturedProducts = ({
         }
         const data = await response.json();
         setProducts(data);
+        setFilteredProducts(data); // Inicialmente, mostrar todos los productos
         setError(null);
       } catch (error) {
         console.error("Error:", error);
@@ -69,31 +46,52 @@ const FeaturedProducts = ({
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/categories");
+        if (!response.ok) {
+          throw new Error("Error al obtener las categorías");
+        }
+        const data = await response.json();
+        setCategories(data); // Guardar las categorías en el estado
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
     fetchProducts();
-  }, [showOffers, selectedCategory]);
+    fetchCategories(); // Llamar a la función para obtener las categorías
+  }, []);
 
   useEffect(() => {
-    if (showOffers) {
-      setCurrentTitle("Disfraces en Oferta");
-      setCurrentDescription(
-        "¡No te pierdas nuestros increíbles descuentos por tiempo limitado!"
+    if (selectedCategory) {
+      // Filtrar productos por categoría seleccionada
+      const filtered = products.filter(
+        (product) => product.category_id === selectedCategory
       );
-    } else if (selectedCategory) {
-      setCurrentTitle(`Disfraces de ${selectedCategory}`);
+      setFilteredProducts(filtered);
+      setCurrentTitle(
+        `Disfraces de ${
+          categories.find((cat) => cat.id === selectedCategory)?.name
+        }`
+      );
       setCurrentDescription(
-        `Explora nuestra colección de disfraces de ${selectedCategory}`
+        `Explora nuestra colección de disfraces de ${
+          categories.find((cat) => cat.id === selectedCategory)?.name
+        }`
       );
     } else {
+      // Si no hay categoría seleccionada, mostrar todos los productos
+      setFilteredProducts(products);
       setCurrentTitle("Disfraces Destacados");
       setCurrentDescription(
         "Descubre nuestros disfraces más populares y nuevas llegadas"
       );
     }
-  }, [showOffers, selectedCategory]);
+  }, [selectedCategory, products, categories]);
 
-  const handleCategorySelect = (category: string) => {
-    console.log(`Categoría seleccionada: ${category}`);
-    // Aquí podrías filtrar los productos por categoría si lo deseas
+  const handleCategorySelect = (categoryId: number) => {
+    setSelectedCategory(categoryId); // Establecer la categoría seleccionada
   };
 
   if (loading) {
@@ -129,12 +127,12 @@ const FeaturedProducts = ({
               <div className="space-y-2">
                 {categories.map((category) => (
                   <Button
-                    key={category}
+                    key={category.id}
                     variant="ghost"
                     className="w-full justify-start text-left hover:bg-primary hover:text-white transition-colors"
-                    onClick={() => handleCategorySelect(category)}
+                    onClick={() => handleCategorySelect(category.id)} // Establecer la categoría seleccionada
                   >
-                    {category}
+                    {category.name}
                   </Button>
                 ))}
               </div>
@@ -146,7 +144,7 @@ const FeaturedProducts = ({
       <div className="relative">
         <div className="scrollbar-hide overflow-x-auto pb-6 max-h-[800px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id} // Cambiado a product.id
                 id={product.id} // Añadido id
