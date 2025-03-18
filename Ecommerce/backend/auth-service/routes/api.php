@@ -33,5 +33,6 @@ Route::group([
     Route::post('register', 'App\Http\Controllers\AuthController@register');
     Route::get('/users/{id}', [UserController::class, 'show']);
     Route::get('/users', [UserController::class, 'index']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
 
 });
