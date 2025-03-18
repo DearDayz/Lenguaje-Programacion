@@ -17,13 +17,18 @@ interface Product {
   isNew?: boolean;
 }
 
+interface Category {
+  id: number;
+  name: string;
+}
+
 const ProductDetail = () => {
-  // Extraer el ID de la URL manualmente
   const path = window.location.pathname; // Obtener la ruta actual
   const id = path.split("/").pop(); // Dividir la ruta y obtener el último elemento
   console.log("ID del producto:", id); // Imprimir el ID del producto en la consola
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -56,7 +61,21 @@ const ProductDetail = () => {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/categories");
+        if (!response.ok) {
+          throw new Error("Error al obtener las categorías");
+        }
+        const data = await response.json();
+        setCategories(data); // Guardar las categorías en el estado
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
     fetchProduct();
+    fetchCategories(); // Llamar a la función para obtener las categorías
   }, [id]);
 
   const decreaseQuantity = () => {
@@ -99,6 +118,9 @@ const ProductDetail = () => {
     );
   }
 
+  // Obtener el nombre de la categoría correspondiente
+  const category = categories.find((cat) => cat.id === product.category_id);
+
   return (
     <main className="container mx-auto py-24 px-4 md:py-32 md:px-6">
       <div className="mb-6">
@@ -130,7 +152,8 @@ const ProductDetail = () => {
         <div className="space-y-5">
           <div>
             <Badge variant="secondary" className="mb-2">
-              Categoría {product.category_id}
+              Categoría {category ? category.name : "Desconocida"}{" "}
+              {/* Mostrar el nombre de la categoría */}
             </Badge>
             <h1 className="text-3xl font-bold">{product.name}</h1>
             <div className="flex items-center mt-2">
