@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
@@ -11,98 +9,126 @@ use App\Models\User;
 class AuthController extends Controller
 {
     /**
-     * Create a new AuthController instance.
+     * Registrar un nuevo usuario.
      *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
-
-    /**
-     * Get a JWT via given credentials.
-     *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function register(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
 
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        return $this->respondWithToken($token);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return response()->json(['message' => 'Usuario registrado correctamente', 'user' => $user], 201);
     }
 
     /**
-     * Get the authenticated User.
+     * Iniciar sesión.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
+    public function login(Request $request)
     {
-        return response()->json(auth()->user());
+        $credentials = $request->only('email', 'password');
+
+        if (!auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Credenciales inválidas'], 401);
+        }
+
+        return response()->json(['message' => 'Inicio de sesión exitoso']);
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Cerrar sesión.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
     {
-        auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        // La autenticación no es necesaria para cerrar sesión
+        return response()->json(['message' => 'Sesión cerrada correctamente']);
     }
 
     /**
-     * Refresh a token.
+     * Obtener todos los usuarios.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
+    public function getAllUsers()
     {
-        return $this->respondWithToken(auth()->refresh());
+        $users = User::all();
+        return response()->json(['users' => $users]);
     }
 
     /**
-     * Get the token array structure.
+     * Obtener un usuario específico.
      *
-     * @param  string $token
-     *
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    public function getUser($id)
     {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
-    }
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6'
-        ]);
+        $user = User::find($id);
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
 
-        $user = User::create(array_merge(
-                    $validator->validate(),
-                    ['password' => bcrypt($request->password)]
-                ));
+        return response()->json(['user' => $user]);
+    }
 
-        return response()->json([
-            'message' => 'Usuario registrado correctamente',
-            'user' => $user
-        ], 201);
+    /**
+     * Actualizar un usuario específico.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'sometimes|required|string|min:6|confirmed',
+            'telefono' => 'sometimes|required|string|max:15',
+            'direccion' => 'sometimes|required|string|max:255',
+            'codigo_postal' => 'sometimes|required|string|max:10',
+            'ciudad' => 'sometimes|required|string|max:100',
+            'pais' => 'sometimes|required|string|max:100',
+            'informacion_adicional' => 'sometimes|required|string|max:500',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $user->update($request->only('name', 'email', 'telefono', 'direccion', 'codigo_postal', 'ciudad', 'pais', 'informacion_adicional'));
+
+        if($request->has('password')) {
+            $user->password = bcrypt($request->password);
+            $user->save();
+        }
+
+        return response()->json(['message' => 'Usuario actualizado correctamente', 'user' => $user]);
     }
 }

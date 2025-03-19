@@ -1,66 +1,209 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Auth Service
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este es el servicio de autenticación para el sistema de ecommerce. Este servicio maneja el registro, inicio de sesión, cierre de sesión y la gestión de usuarios.
 
-## About Laravel
+## Instalación
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. Clona el repositorio:
+    ```bash
+    git clone https://github.com/DearDayz/Lenguaje-Programacion.git
+    ```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2. Navega a la carpeta del servicio de autenticación:
+    ```bash
+    cd Ecommerce/backend/auth-service
+    ```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3. Instala las dependencias usando Composer:
+    ```bash
+    composer install
+    ```
 
-## Learning Laravel
+4. Crea un archivo `.env` a partir del archivo de ejemplo:
+    ```bash
+    cp .env.example .env
+    ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+5. Genera la clave de la aplicación:
+    ```bash
+    php artisan key:generate
+    ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+6. Configura la base de datos en el archivo `.env`.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+7. Ejecuta las migraciones para crear las tablas necesarias:
+    ```bash
+    php artisan migrate
+    ```
 
-## Laravel Sponsors
+8. Inicia el servidor de desarrollo:
+    ```bash
+    php artisan serve
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Endpoints
 
-### Premium Partners
+### Registro de Usuario
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- **URL:** `/api/auth/register`
+- **Método:** `POST`
+- **Descripción:** Registra un nuevo usuario.
+- **Cuerpo de la solicitud:**
+    ```json
+    {
+        "name": "Juan Pérez",
+        "email": "juan.perez@example.com",
+        "password": "password123",
+        "password_confirmation": "password123"
+    }
+    ```
+- **Respuesta exitosa:**
+    ```json
+    {
+        "message": "Usuario registrado correctamente",
+        "user": {
+            "id": 1,
+            "name": "Juan Pérez",
+            "email": "juan.perez@example.com",
+            "created_at": "2025-03-19T17:02:18.000000Z",
+            "updated_at": "2025-03-19T17:02:18.000000Z"
+        }
+    }
+    ```
 
-## Contributing
+### Inicio de Sesión
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **URL:** `/api/auth/login`
+- **Método:** `POST`
+- **Descripción:** Inicia sesión con las credenciales del usuario.
+- **Cuerpo de la solicitud:**
+    ```json
+    {
+        "email": "juan.perez@example.com",
+        "password": "password123"
+    }
+    ```
+- **Respuesta exitosa:**
+    ```json
+    {
+        "message": "Inicio de sesión exitoso"
+    }
+    ```
 
-## Code of Conduct
+### Cierre de Sesión
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **URL:** `/api/auth/logout`
+- **Método:** `POST`
+- **Descripción:** Cierra la sesión del usuario.
+- **Respuesta exitosa:**
+    ```json
+    {
+        "message": "Sesión cerrada correctamente"
+    }
+    ```
 
-## Security Vulnerabilities
+### Obtener Todos los Usuarios
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **URL:** `/api/auth/users`
+- **Método:** `GET`
+- **Descripción:** Obtiene una lista de todos los usuarios.
+- **Respuesta exitosa:**
+    ```json
+    {
+        "users": [
+            {
+                "id": 1,
+                "name": "Juan Pérez",
+                "email": "juan.perez@example.com",
+                "telefono": "987654321",
+                "direccion": "Nueva Dirección 456",
+                "codigo_postal": "54321",
+                "ciudad": "Nueva Ciudad",
+                "pais": "Nuevo País",
+                "informacion_adicional": "Nueva información adicional del usuario",
+                "created_at": "2025-03-19T17:02:18.000000Z",
+                "updated_at": "2025-03-19T17:02:18.000000Z"
+            }
+        ]
+    }
+    ```
 
-## License
+### Obtener un Usuario Específico
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **URL:** `/api/auth/users/{id}`
+- **Método:** `GET`
+- **Descripción:** Obtiene los datos de un usuario específico.
+- **Respuesta exitosa:**
+    ```json
+    {
+        "user": {
+            "id": 1,
+            "name": "Juan Pérez",
+            "email": "juan.perez@example.com",
+            "telefono": "987654321",
+            "direccion": "Nueva Dirección 456",
+            "codigo_postal": "54321",
+            "ciudad": "Nueva Ciudad",
+            "pais": "Nuevo País",
+            "informacion_adicional": "Nueva información adicional del usuario",
+            "created_at": "2025-03-19T17:02:18.000000Z",
+            "updated_at": "2025-03-19T17:02:18.000000Z"
+        }
+    }
+    ```
+
+### Actualizar un Usuario Específico
+
+- **URL:** `/api/auth/users/{id}`
+- **Método:** `PUT`
+- **Descripción:** Actualiza los datos de un usuario específico.
+- **Cuerpo de la solicitud:**
+    ```json
+    {
+        "name": "Juan Pérez Actualizado",
+        "email": "juan.perez.actualizado@example.com",
+        "telefono": "987654321",
+        "direccion": "Nueva Dirección 456",
+        "codigo_postal": "54321",
+        "ciudad": "Nueva Ciudad",
+        "pais": "Nuevo País",
+        "informacion_adicional": "Nueva información adicional del usuario"
+    }
+    ```
+- **Respuesta exitosa:**
+    ```json
+    {
+        "message": "Usuario actualizado correctamente",
+        "user": {
+            "id": 1,
+            "name": "Juan Pérez Actualizado",
+            "email": "juan.perez.actualizado@example.com",
+            "telefono": "987654321",
+            "direccion": "Nueva Dirección 456",
+            "codigo_postal": "54321",
+            "ciudad": "Nueva Ciudad",
+            "pais": "Nuevo País",
+            "informacion_adicional": "Nueva información adicional del usuario",
+            "created_at": "2025-03-19T17:02:18.000000Z",
+            "updated_at": "2025-03-19T17:02:18.000000Z"
+        }
+    }
+    ```
+
+## Pruebas
+
+Para probar los endpoints, puedes usar una herramienta como [Postman](https://www.postman.com/). Sigue las instrucciones proporcionadas en cada sección de endpoints para configurar y enviar las solicitudes.
+
+## Contribución
+
+Si deseas contribuir a este proyecto, por favor sigue los siguientes pasos:
+
+1. Haz un fork del repositorio.
+2. Crea una nueva rama (`git checkout -b feature/nueva-feature`).
+3. Realiza tus cambios y haz commits (`git commit -am 'Agrega nueva feature'`).
+4. Sube tus cambios a tu fork (`git push origin feature/nueva-feature`).
+5. Abre un Pull Request en el repositorio original.
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo `LICENSE` para obtener más detalles.
