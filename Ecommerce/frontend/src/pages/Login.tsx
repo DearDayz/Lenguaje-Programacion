@@ -90,6 +90,9 @@ const Login = () => {
         const user = usersData.users.find((user) => user.email === email);
 
         if (user) {
+          // Imprimir el ID del usuario en la consola
+          console.log("ID del usuario logueado:", user.id);
+
           // Redirigir al dashboard después del login exitoso
           navigate("/dashboard", { state: { userId: user.id } }); // Pasar el ID del usuario al dashboard
         } else {
