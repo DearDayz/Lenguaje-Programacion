@@ -11,21 +11,21 @@ const AboutUs = () => {
       role: "Fundador y CEO",
       description:
         "Con más de 15 años de experiencia en la industria del disfraz, Diego fundó Disfracasos para ofrecer disfraces de alta calidad a precios accesibles.",
-      image: "http://localhost:8080/public/yo.jpg",
+      image: "http://localhost:8080/public/yo.jpg", // Asegúrate de que esta imagen esté optimizada
     },
     {
       name: "CRISTIAN LEONARDO GUEVARA CASTRO",
       role: "Director Creativo",
       description:
         "CRISTIAN supervisa todo el diseño y la calidad de nuestros productos, asegurándose de que cada disfraz cumpla con nuestros altos estándares.",
-      image: "http://localhost:8080/public/cris.jpg",
+      image: "http://localhost:8080/public/cris.jpg", // Asegúrate de que esta imagen esté optimizada
     },
     {
       name: "JOSE VICENTE FARRAUTO MARTINEZ",
       role: "Gerente de Atención al Cliente",
       description:
         "JOSE VICENTE lidera nuestro equipo de servicio al cliente, comprometida a brindar la mejor experiencia de compra para nuestros clientes.",
-      image: "http://localhost:8080/public/jose.jpg",
+      image: "http://localhost:8080/public/jose.jpg", // Asegúrate de que esta imagen esté optimizada
     },
   ];
 
@@ -66,7 +66,8 @@ const AboutUs = () => {
           <img
             src="https://images.unsplash.com/photo-1578269174936-2709b6aeb913"
             alt="Tienda Disfracasos"
-            className="w-full h-full object-cover"
+            className="w-full h-96 object-cover"
+            loading="lazy"
           />
         </div>
       </div>
@@ -133,7 +134,7 @@ const AboutUs = () => {
               <img
                 src={member.image}
                 alt={member.name}
-                className="w-full h-64 object-cover"
+                className="w-full h-80 object-cover" // Mejora la calidad y adaptación de la imagen
               />
               <CardContent className="pt-6">
                 <h3 className="text-xl font-bold mb-1">{member.name}</h3>
