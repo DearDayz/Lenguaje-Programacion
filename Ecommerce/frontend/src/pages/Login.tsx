@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,20 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+
+  // Verificar si la cookie existe al montar el componente
+  useEffect(() => {
+    const userId = getCookie("userId");
+    if (userId) {
+      navigate("/dashboard"); // Redirigir al dashboard si la cookie existe
+    }
+  }, [navigate]);
+
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
 
   const validateForm = () => {
     let isValid = true;
@@ -93,8 +107,11 @@ const Login = () => {
           // Imprimir el ID del usuario en la consola
           console.log("ID del usuario logueado:", user.id);
 
+          // Establecer la cookie con el ID del usuario
+          document.cookie = `userId=${user.id}; path=/; max-age=3600`; // Expira en 1 hora
+
           // Redirigir al dashboard después del login exitoso
-          navigate("/dashboard", { state: { userId: user.id } }); // Pasar el ID del usuario al dashboard
+          navigate("/dashboard");
         } else {
           setErrors({ ...errors, email: "Usuario no encontrado" });
         }

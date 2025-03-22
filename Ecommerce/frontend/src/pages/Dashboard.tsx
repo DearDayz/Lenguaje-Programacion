@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,8 +30,6 @@ const purchaseHistory = [
 ];
 
 const Dashboard = () => {
-  const location = useLocation();
-  const userId = location.state?.userId; // Obtener el ID del usuario pasado desde el Login
   const [activeTab, setActiveTab] = useState("profile");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,6 +38,12 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const userId = getCookie("userId"); // Obtener el ID del usuario de la cookie
+    if (!userId) {
+      navigate("/"); // Redirigir al inicio si no hay ID
+      return;
+    }
+
     const fetchUser = async () => {
       try {
         const response = await fetch(
@@ -57,10 +61,20 @@ const Dashboard = () => {
       }
     };
 
-    if (userId) {
-      fetchUser(); // Llamar a la función para obtener los datos del usuario
-    }
-  }, [userId]);
+    fetchUser(); // Llamar a la función para obtener los datos del usuario
+  }, [navigate]);
+
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+
+  const handleLogout = () => {
+    // Eliminar la cookie
+    document.cookie = "userId=; path=/; max-age=0";
+    navigate("/"); // Redirigir al inicio
+  };
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -71,7 +85,7 @@ const Dashboard = () => {
   }
 
   // Imprimir en consola que se llegó a la vista del dashboard
-  console.log(`Llegó a vista dashboard con id=${userId}`);
+  console.log(`Llegó a vista dashboard con id=${user.id}`);
 
   return (
     <div className="container mx-auto py-16 px-4 md:py-32 md:px-6">
@@ -93,6 +107,7 @@ const Dashboard = () => {
             variant="outline"
             size="sm"
             className="text-red-500 hover:text-red-700 hover:bg-red-50 w-full md:w-auto transition-colors"
+            onClick={handleLogout} // Llamar a la función de cerrar sesión
           >
             <LogOut className="mr-2 h-4 w-4" />
             Cerrar sesión
@@ -176,7 +191,7 @@ const Dashboard = () => {
                   <Button
                     className="flex items-center gap-2 w-full md:w-auto hover:bg-primary/90 transition-colors"
                     onClick={() =>
-                      navigate("/editar-perfil", { state: { userId } })
+                      navigate("/editar-perfil", { state: { userId: user.id } })
                     }
                   >
                     <Edit className="h-4 w-4" />

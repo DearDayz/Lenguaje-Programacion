@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,15 +14,8 @@ import { ArrowLeft, Save, X } from "lucide-react";
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const userId = location.state?.userId; // Obtener el ID del usuario pasado desde el Dashboard
-
-  // Imprimir en consola el ID del usuario
-  console.log(`ID del usuario recibido en EditProfile: ${userId}`);
-
-  // Estado para los datos del formulario
   const [formData, setFormData] = useState({
-    id: userId, // Inicializar el ID aquí
+    id: "", // Inicializar el ID aquí
     name: "",
     email: "",
     phone: "",
@@ -46,6 +39,12 @@ const EditProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const userId = getCookie("userId"); // Obtener el ID del usuario de la cookie
+    if (!userId) {
+      navigate("/"); // Redirigir al inicio si no hay ID
+      return;
+    }
+
     // Cargar los datos del usuario al montar el componente
     const fetchUser = async () => {
       try {
@@ -73,10 +72,14 @@ const EditProfile = () => {
       }
     };
 
-    if (userId) {
-      fetchUser();
-    }
-  }, [userId]);
+    fetchUser();
+  }, [navigate]);
+
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
