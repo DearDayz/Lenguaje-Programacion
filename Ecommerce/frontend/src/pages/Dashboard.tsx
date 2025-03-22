@@ -41,7 +41,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      // Función para obtener los datos del usuario
       try {
         const response = await fetch(
           `http://127.0.0.1:8001/api/auth/users/${userId}`
@@ -176,7 +175,9 @@ const Dashboard = () => {
                   </div>
                   <Button
                     className="flex items-center gap-2 w-full md:w-auto hover:bg-primary/90 transition-colors"
-                    onClick={() => navigate("/editar-perfil")}
+                    onClick={() =>
+                      navigate("/editar-perfil", { state: { userId } })
+                    }
                   >
                     <Edit className="h-4 w-4" />
                     Editar Información
