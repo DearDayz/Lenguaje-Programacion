@@ -1,44 +1,83 @@
-
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Mail, Lock, UserPlus } from 'lucide-react';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { User, Mail, Lock, UserPlus } from "lucide-react";
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    
+    setError("");
+
     if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
+      setError("Las contraseñas no coinciden");
       return;
     }
-    
+
     setIsLoading(true);
-    
-    // Simulación de un proceso de registro
-    setTimeout(() => {
+
+    try {
+      // Organizar los datos en un JSON con la estructura correcta
+      const userData = {
+        name: name,
+        email: email,
+        password: password,
+        password_confirmation: confirmPassword,
+      };
+
+      // Realizar la solicitud POST para registrar el usuario
+      const response = await fetch("http://127.0.0.1:8001/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.message.includes("email")) {
+          setError("Ya existe un usuario con ese correo");
+        } else {
+          throw new Error(errorData.message || "Error al registrar el usuario");
+        }
+        setIsLoading(false);
+        return;
+      }
+
+      // Notificar al usuario que el registro fue exitoso
+      alert("Registro exitoso");
+      navigate("/"); // Redirigir a la página principal después del registro exitoso
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
       setIsLoading(false);
-      // Redirigir al dashboard después del registro exitoso
-      navigate('/dashboard');
-    }, 1000);
+    }
   };
 
   return (
     <div className="container mx-auto py-32 flex justify-center">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Crear Cuenta</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">
+            Crear Cuenta
+          </CardTitle>
           <CardDescription className="text-center">
             Ingresa tus datos para registrarte
           </CardDescription>
@@ -99,9 +138,11 @@ const Register = () => {
             </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <Button type="submit" className="w-full gap-2" disabled={isLoading}>
-              {isLoading ? 'Creando cuenta...' : (
+              {isLoading ? (
+                "Creando cuenta..."
+              ) : (
                 <>
-                  <UserPlus className="h-5 w-5" />
+                  <User Plus className="h-5 w-5" />
                   Crear Cuenta
                 </>
               )}
