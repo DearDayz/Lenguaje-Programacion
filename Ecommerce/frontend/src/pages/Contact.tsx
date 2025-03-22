@@ -230,13 +230,15 @@ const Contact = () => {
       <div className="mb-20">
         <h2 className="text-2xl font-bold mb-6 text-center">Encuéntranos</h2>
         <div className="h-[400px] bg-gray-100 rounded-lg overflow-hidden">
-          {/* Aquí iría un mapa embebido, por ahora usamos una imagen placeholder */}
-          <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
-            <div className="text-center">
-              <MapPin className="h-12 w-12 mx-auto mb-2 text-gray-400" />
-              <p className="text-lg font-medium">Mapa de ubicación</p>
-            </div>
-          </div>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31411.363687334593!2d-67.96428635!3d10.22763275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e805d284797b2c9%3A0x792aeec9324d3695!2sUniversidad%20Jos%C3%A9%20Antonio%20P%C3%A1ez!5e0!3m2!1ses!2sve!4v1742628399152!5m2!1ses!2sve"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
+import SearchSection from "./SearchSection"; // Importar SearchSection
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -23,6 +24,7 @@ const FeaturedProducts = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -64,12 +66,26 @@ const FeaturedProducts = () => {
   }, []);
 
   useEffect(() => {
+    let filtered = products;
+
+    // Filtrar productos por categoría seleccionada
     if (selectedCategory) {
-      // Filtrar productos por categoría seleccionada
-      const filtered = products.filter(
+      filtered = filtered.filter(
         (product) => product.category_id === selectedCategory
       );
-      setFilteredProducts(filtered);
+    }
+
+    // Filtrar productos por término de búsqueda
+    if (searchTerm) {
+      filtered = filtered.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredProducts(filtered);
+
+    // Actualizar el título y la descripción según la categoría seleccionada
+    if (selectedCategory) {
       setCurrentTitle(
         `Disfraces de ${
           categories.find((cat) => cat.id === selectedCategory)?.name
@@ -81,17 +97,24 @@ const FeaturedProducts = () => {
         }`
       );
     } else {
-      // Si no hay categoría seleccionada, mostrar todos los productos
-      setFilteredProducts(products);
       setCurrentTitle("Disfraces Destacados");
       setCurrentDescription(
         "Descubre nuestros disfraces más populares y nuevas llegadas"
       );
     }
-  }, [selectedCategory, products, categories]);
+  }, [selectedCategory, products, searchTerm, categories]);
 
-  const handleCategorySelect = (categoryId: number) => {
-    setSelectedCategory(categoryId); // Establecer la categoría seleccionada
+  const handleCategorySelect = (category: string) => {
+    if (category === "Todas") {
+      setSelectedCategory(null); // Mostrar todos los productos
+    } else {
+      const categoryId = categories.find((cat) => cat.name === category)?.id;
+      setSelectedCategory(categoryId); // Establecer la categoría seleccionada
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value); // Actualizar el término de búsqueda
   };
 
   if (loading) {
@@ -110,6 +133,13 @@ const FeaturedProducts = () => {
           {currentDescription}
         </p>
 
+        {/* Barra de búsqueda */}
+        <SearchSection
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          onCategorySelect={handleCategorySelect}
+        />
+
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -125,12 +155,19 @@ const FeaturedProducts = () => {
             </SheetHeader>
             <div className="py-6">
               <div className="space-y-2">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-left hover:bg-primary hover:text-white transition-colors"
+                  onClick={() => handleCategorySelect("Todas")} // Para mostrar todos los productos
+                >
+                  Todas
+                </Button>
                 {categories.map((category) => (
                   <Button
                     key={category.id}
                     variant="ghost"
                     className="w-full justify-start text-left hover:bg-primary hover:text-white transition-colors"
-                    onClick={() => handleCategorySelect(category.id)} // Establecer la categoría seleccionada
+                    onClick={() => handleCategorySelect(category.name)} // Establecer la categoría seleccionada
                   >
                     {category.name}
                   </Button>
