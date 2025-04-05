@@ -37,7 +37,7 @@ const WelcomeScreen = ({ navigation }) => (
       </Text>
     </TouchableOpacity>
 
-    <TouchableOpacity
+    {/* <TouchableOpacity
       onPress={() => navigation.navigate("apiScreen")}
       style={{
         backgroundColor: "#f96163",
@@ -51,7 +51,7 @@ const WelcomeScreen = ({ navigation }) => (
       <Text style={{ fontSize: 18, color: "#fff", fontWeight: "700" }}>
         API
       </Text>
-    </TouchableOpacity>
+    </TouchableOpacity> */}
   </View>
 );
 

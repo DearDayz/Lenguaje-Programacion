@@ -16,12 +16,10 @@ const CatgoriesFilter = () => {
                 borderRadius: 8,
                 paddingHorizontal: 16,
                 paddingVertical: 10,
-                
                 shadowColor: "000",
-                shadowOffset: { width: 0, height: 4 },
+                shadowOffset: { width: 1, height: 4 },
                 shadowOpacity: 0.1,
                 shadowRadius: 7,
-
                 marginVertical: 16,
               }}
             >
