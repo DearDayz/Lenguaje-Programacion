@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, SafeAreaView, TextInput } from "react-native";
 import React, {useState } from "react";
 import Header from "../components/Header";
-//import SearchFilter from "../components/SearchFilter";
 import CatgoriesFilter from "../components/CatgoriesFilter";
 import RecepieCard from "../components/RecipieCard";
 import { searchRecipes } from '../service/api';
