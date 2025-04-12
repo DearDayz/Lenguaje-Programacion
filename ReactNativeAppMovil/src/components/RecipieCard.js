@@ -7,12 +7,20 @@ import {
   Pressable,
 } from "react-native";
 import React from "react";
-import { colors, recipeList } from "../constant";
+import { colors } from "../constant";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const RecipieCard = ({meals}) => {
+const RecipieCard = ({meals, fav=false}) => {
   const navigation = useNavigation();
+
+  if (fav && meals.length === 0) {
+    return (
+      <View style={styles.noResultsContainer}>
+        <Text style={styles.noResults}>You don't have any favorite recipes</Text>
+      </View>
+    );
+  }
 
   if (!meals || meals.length === 0) {
     return (
@@ -24,9 +32,6 @@ const RecipieCard = ({meals}) => {
 
   return (
     <View>
-      {meals.length === 0 ? (
-        <Text style={styles.noResults}>No se encontraron recetas.</Text>
-      ) : (
         <FlatList
           data={meals}
           keyExtractor={(item) => item.idMeal}
@@ -34,7 +39,6 @@ const RecipieCard = ({meals}) => {
             <Pressable
               onPress={() => navigation.navigate("RecepieDetails", { meal: item })}
               style={{
-                //backgroundColor: colors.COLOR_LIGHT,
                 backgroundColor: "#fff",
                 shadowColor: "#000",
                 shadowOffset: { width: 1, height: 4 },
@@ -53,7 +57,6 @@ const RecipieCard = ({meals}) => {
                 style={{ width: 150, height: 150, resizeMode: "cover", borderRadius: 8 }}
               />
               <Text style={styles.mealTitle}>{item.strMeal}</Text>
-              {/* Estos campos podrías eliminarlos si no los tienes en la API */}
               <View style={styles.areaContainer}>
                 <FontAwesome
                     name="map-marker"
@@ -70,7 +73,6 @@ const RecipieCard = ({meals}) => {
           }}
           showsVerticalScrollIndicator={false}
         />
-      )}
     </View>
   );
 };

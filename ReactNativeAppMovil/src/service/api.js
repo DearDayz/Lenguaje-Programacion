@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const API_KEY = '1'; // Reemplaza con tu API key
 const BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
 
 export const searchRecipes = async (query) => {
