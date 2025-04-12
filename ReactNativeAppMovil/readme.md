@@ -15,23 +15,6 @@ Una aplicación móvil desarrollada en React Native para explorar recetas de coc
 - **Iconos**: Expo Vector Icons
 - **Animaciones**: React Native Reanimated
 
-## 📦 Estructura de Directorios
-```
-│   .gitignore
-│   App.js
-│   app.json
-│   index.js
-│   package.json
-├───assets
-│   └───images  # Logos e imágenes estáticas
-└───src
-    │   constant.js  # Colores, textos fijos
-    ├───components  # Componentes reutilizables
-    ├───navegation  # Configuración de rutas
-    ├───screens     # Tres vistas principales
-    └───service     # Lógica de conexión a API
-```
-
 ## 🔧 Instalación para Desarrollo
 1. **Clona el repositorio**:
    ```bash
