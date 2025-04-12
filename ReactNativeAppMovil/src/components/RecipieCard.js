@@ -11,8 +11,16 @@ import { colors } from "../constant";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const RecipieCard = ({meals}) => {
+const RecipieCard = ({meals, fav=false}) => {
   const navigation = useNavigation();
+
+  if (fav && meals.length === 0) {
+    return (
+      <View style={styles.noResultsContainer}>
+        <Text style={styles.noResults}>You don't have any favorite recipes</Text>
+      </View>
+    );
+  }
 
   if (!meals || meals.length === 0) {
     return (

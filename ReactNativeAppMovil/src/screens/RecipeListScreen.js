@@ -25,7 +25,7 @@ const RecipeListScreen = () => {
     return(
         <SafeAreaView style={{flex: 1, marginHorizontal:16, marginTop:10}}>
             {/* Render Header Component */}
-            <Header headerText={"Let him Cock"} headIcon={"handshake-o"}/>
+            <Header headerText={"Let him Cock"} headIcon={"bookmark-o"}/>
             {/* Sarch Filter */}
             <TextInput
                     style={styles.searchInput}

@@ -1,8 +1,13 @@
-import React from 'react';
-import { View, ScrollView, Text, Image, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import { View, ScrollView, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { favRec } from '../navegation/AppNavigator';
 
 const RecipeDetailScreen = ({ route }) => {
   const { meal } = route.params;
+  const [isFavorite, setIsFavorite] = useState(
+    favRec.some(fav => fav.idMeal === meal.idMeal)
+  );
 
   // Extraer ingredientes y medidas de forma más eficiente
   const ingredients = [];
@@ -19,12 +24,30 @@ const RecipeDetailScreen = ({ route }) => {
     .split('\r\n')
     .filter(step => step.trim());
 
+    const handleAddToFavorites = () => {
+      if (!isFavorite) {
+        favRec.push(meal);
+        setIsFavorite(true);
+        // alert("¡Receta añadida a favoritos!");
+      } else {
+        const index = favRec.findIndex(fav => fav.idMeal === meal.idMeal);
+        favRec.splice(index, 1);
+        setIsFavorite(false);
+        // alert("¡Receta eliminada de favoritos!");
+      }
+    };
+
   return (
     <ScrollView style={styles.container}>
       <Image source={{ uri: meal.strMealThumb }} style={styles.image} />
       
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>{meal.strMeal}</Text>
+        <View style={{flexDirection: 'row'}}>
+            <Text style={styles.title}>{meal.strMeal}</Text>
+            <TouchableOpacity onPress={() => handleAddToFavorites()}>
+                <FontAwesome name={isFavorite ? "heart" : "heart-o"} size={28} color="#f96163" style={{padding: 8}}/>
+            </TouchableOpacity>
+        </View>
         
         <View style={styles.metaContainer}>
           <Text style={styles.metaText}>🍴 {meal.strCategory}</Text>
@@ -68,6 +91,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
+    flex:1,
     fontSize: 28,
     fontWeight: '800',
     color: '#2c3e50',
